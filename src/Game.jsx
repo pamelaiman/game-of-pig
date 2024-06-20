@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-
-
 export function Game() {
     const [gameLength, setGameLength] = useState(30);
     const [lastRoll, setLastRoll] = useState(null);
@@ -13,10 +11,7 @@ export function Game() {
     const [playerTwoPlaying, setPlayerTwoPlaying] = useState(false);
     const [winnerFound, setWinnerFound] = useState(false);
 
-
     function changePlayer() {
-
-
         if (currentPlayer === "P1") {
             setPlayerOnePlaying(!playerOnePlaying);
             setPlayerTwoPlaying(!playerTwoPlaying);
@@ -29,26 +24,24 @@ export function Game() {
             setPlayerTwoScore((playerTwoScore) => playerTwoScore + turnTotal);
             setTurnTotal(0);
             setCurrentPlayer("P1");
-
         }
         if (playerOneScore >= gameLength) {
-            setWinnerFound(true)
+            setWinnerFound(true);
         } else if (playerTwoScore >= gameLength) {
-            setWinnerFound(true)
+            setWinnerFound(true);
         }
     }
     function handleRollButton() {
-        const randomNumber = Math.floor(Math.random() * 6);
+        const randomNumber = Math.floor(Math.random() * 6 + 1);
         setLastRoll(randomNumber);
         setTurnTotal((turnTotal) => turnTotal + randomNumber);
     }
 
     if (playerOneScore >= gameLength) {
-        console.log("1 wins")
+        console.log("1 wins");
     } else if (playerTwoScore >= gameLength) {
-        console.log("2 wins")
+        console.log("2 wins");
     }
-
 
     function shortGame() {
         setGameLength(30);
@@ -62,7 +55,7 @@ export function Game() {
 
     function longGame() {
         setGameLength(100);
-        setCurrentPlayer("P1")
+        setCurrentPlayer("P1");
         setTurnTotal(0);
         setLastRoll(null);
         setPlayerOneScore(0);
@@ -70,20 +63,35 @@ export function Game() {
         setWinnerFound(false);
     }
 
-
     function Pig(pig) {
         return (
             <div className="pig">
                 <section className="mini-section">
-                    {winnerFound ? <button onClick={handleRollButton} className="rollButton" disabled >Roll!</button> :
-                        <button onClick={handleRollButton} className="rollButton" >Roll!</button>}
+                    {winnerFound ? (
+                        <button
+                            onClick={handleRollButton}
+                            className="rollButton"
+                            disabled
+                        >
+                            Roll!
+                        </button>
+                    ) : (
+                        <button
+                            onClick={handleRollButton}
+                            className="rollButton"
+                        >
+                            Roll!
+                        </button>
+                    )}
                     <p className="last-roll">
                         {pig.previousRoll}: {lastRoll === null ? "-" : lastRoll}
                     </p>
                     <p className="turn-total">
                         {pig.numberOfTurns}: {turnTotal}
                     </p>
-                    <button onClick={changePlayer} className="stickButton">Stick!</button>
+                    <button onClick={changePlayer} className="stickButton">
+                        Stick!
+                    </button>
                 </section>
             </div>
         );
@@ -93,8 +101,14 @@ export function Game() {
         <div className="game-box">
             <h1>🐷 Game of Pig 🐷 </h1>
             <h2>(First to {gameLength})</h2>
-            <p className="player">Player 1 : {playerOneScore} {playerOnePlaying ? <>(Playing)</> : ""}</p>
-            <p className="player">Player 2 : {playerTwoScore} {playerTwoPlaying ? <>(Playing)</> : ""}</p>
+            <p className="player">
+                Player 1 : {playerOneScore}{" "}
+                {playerOnePlaying ? <>(Playing)</> : ""}
+            </p>
+            <p className="player">
+                Player 2 : {playerTwoScore}{" "}
+                {playerTwoPlaying ? <>(Playing)</> : ""}
+            </p>
 
             <Pig
                 previousRoll="Last Roll"
