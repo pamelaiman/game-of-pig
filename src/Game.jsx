@@ -13,46 +13,38 @@ export function Game() {
 
     function changePlayer() {
         if (currentPlayer === "P1") {
-            setPlayerOnePlaying(!playerOnePlaying);
-            setPlayerTwoPlaying(!playerTwoPlaying);
-            setPlayerOneScore((playerOneScore) => playerOneScore + turnTotal);
+            const newScore = playerOneScore + turnTotal;
+            setPlayerOneScore(newScore);
+
+            if (newScore >= gameLength) {
+                setWinnerFound(true);
+                alert("Player 1 Wins!");
+            }
+
             setTurnTotal(0);
             setCurrentPlayer("P2");
-        } else {
             setPlayerOnePlaying(!playerOnePlaying);
             setPlayerTwoPlaying(!playerTwoPlaying);
-            setPlayerTwoScore((playerTwoScore) => playerTwoScore + turnTotal);
+        } else {
+            const newScore = playerTwoScore + turnTotal;
+            setPlayerTwoScore(newScore);
+
+            if (newScore >= gameLength) {
+                setWinnerFound(true);
+                alert("Player 2 Wins!");
+            }
+
             setTurnTotal(0);
             setCurrentPlayer("P1");
-        }
-        if (playerOneScore >= gameLength) {
-            setWinnerFound(true);
-        } else if (playerTwoScore >= gameLength) {
-            setWinnerFound(true);
-        }
-    }
-    function handleRollButton() {
-        const randomNumber = Math.floor(Math.random() * 6 + 1);
-        setLastRoll(randomNumber);
-        if (playerOnePlaying === true && lastRoll === 1) {
-            setTurnTotal(0);
             setPlayerOnePlaying(!playerOnePlaying);
             setPlayerTwoPlaying(!playerTwoPlaying);
-            setCurrentPlayer("P2");
-        } else if (playerTwoPlaying === true && lastRoll === 1) {
-            setTurnTotal(0);
-            setPlayerOnePlaying(!playerOnePlaying);
-            setPlayerTwoPlaying(!playerTwoPlaying);
-            setCurrentPlayer("P1");
-        } else {
-            setTurnTotal((turnTotal) => turnTotal + randomNumber);
         }
     }
 
-    if (playerOneScore >= gameLength) {
-        console.log("1 wins");
-    } else if (playerTwoScore >= gameLength) {
-        console.log("2 wins");
+    function handleRollButton() {
+        const randomNumber = Math.floor(Math.random() * 6 + 1);
+        setLastRoll(randomNumber);
+        setTurnTotal((turnTotal) => turnTotal + randomNumber);
     }
 
     function shortGame() {
@@ -62,6 +54,8 @@ export function Game() {
         setLastRoll(null);
         setPlayerOneScore(0);
         setPlayerTwoScore(0);
+        setPlayerOnePlaying(true);
+        setPlayerTwoPlaying(false);
         setWinnerFound(false);
     }
 
@@ -72,6 +66,8 @@ export function Game() {
         setLastRoll(null);
         setPlayerOneScore(0);
         setPlayerTwoScore(0);
+        setPlayerOnePlaying(true);
+        setPlayerTwoPlaying(false);
         setWinnerFound(false);
     }
 
@@ -98,12 +94,24 @@ export function Game() {
                     <p className="last-roll">
                         {pig.previousRoll}: {lastRoll === null ? "-" : lastRoll}
                     </p>
+
                     <p className="turn-total">
                         {pig.numberOfTurns}: {turnTotal}
                     </p>
-                    <button onClick={changePlayer} className="stickButton">
-                        Stick!
-                    </button>
+
+                    {winnerFound ? (
+                        <button
+                            onClick={changePlayer}
+                            className="stickButton"
+                            disabled
+                        >
+                            Stick!
+                        </button>
+                    ) : (
+                        <button onClick={changePlayer} className="stickButton">
+                            Stick!
+                        </button>
+                    )}
                 </section>
             </div>
         );
