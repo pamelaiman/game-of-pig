@@ -13,31 +13,59 @@ export function Game() {
 
     function changePlayer() {
 
-        if (playerOneScore >= gameLength) {
-            setWinnerFound(true)
-        } else if (playerTwoScore >= gameLength) {
-            setWinnerFound(true)
+        if (playerOneScore >= gameLength || playerTwoScore >= gameLength) {
+            if (playerOneScore >= gameLength) {
+                setWinnerFound(true)
+            } else if (playerTwoScore >= gameLength) {
+                setWinnerFound(true)
+            }
+        } else {
+
+            if (currentPlayer === "P1") {
+                setPlayerOnePlaying(!playerOnePlaying);
+                setPlayerTwoPlaying(!playerTwoPlaying);
+                if (turnTotal === 1) {
+                    setPlayerOneScore((playerOneScore) => playerOneScore + 0);
+                } else { setPlayerOneScore((playerOneScore) => playerOneScore + turnTotal); }
+                setTurnTotal(0);
+                setCurrentPlayer("P2");
+            } else {
+                setPlayerOnePlaying(!playerOnePlaying);
+                setPlayerTwoPlaying(!playerTwoPlaying);
+                if (turnTotal === 1) {
+                    setPlayerTwoScore((playerTwoScore) => playerTwoScore + 0);
+                } else { setPlayerTwoScore((playerTwoScore) => playerTwoScore + turnTotal); }
+                setTurnTotal(0);
+                setCurrentPlayer("P1");
+            }
         }
 
-        if (currentPlayer === "P1") {
-            setPlayerOnePlaying(!playerOnePlaying);
-            setPlayerTwoPlaying(!playerTwoPlaying);
-            setPlayerOneScore((playerOneScore) => playerOneScore + turnTotal);
-            setTurnTotal(0);
-            setCurrentPlayer("P2");
-        } else {
-            setPlayerOnePlaying(!playerOnePlaying);
-            setPlayerTwoPlaying(!playerTwoPlaying);
-            setPlayerTwoScore((playerTwoScore) => playerTwoScore + turnTotal);
-            setTurnTotal(0);
-            setCurrentPlayer("P1");
-        }
     }
 
     function handleRollButton() {
-        const randomNumber = Math.floor(Math.random() * 6);
-        setLastRoll(randomNumber);
-        setTurnTotal((turnTotal) => turnTotal + randomNumber);
+
+        if (playerOneScore >= gameLength || playerTwoScore >= gameLength) {
+            if (playerOneScore >= gameLength) {
+                setWinnerFound(true)
+                setPlayerOnePlaying(true)
+                setPlayerTwoPlaying(false)
+            } else if (playerTwoScore >= gameLength) {
+                setWinnerFound(true)
+                setPlayerOnePlaying(false)
+                setPlayerTwoPlaying(true)
+
+            }
+        } else {
+            const randomNumber = Math.floor(Math.random() * 6);
+            setLastRoll(randomNumber);
+            if (lastRoll === 1) {
+                setTurnTotal(0)
+                setPlayerOnePlaying(!playerOnePlaying);
+                setPlayerTwoPlaying(!playerTwoPlaying);
+            } else {
+                setTurnTotal((turnTotal) => turnTotal + randomNumber);
+            }
+        }
     }
 
     if (playerOneScore >= gameLength) {
@@ -67,12 +95,20 @@ export function Game() {
         setWinnerFound(false);
     }
 
+    function Indicator() {
+        if (winnerFound === true) {
+            return (<>🏆</>)
+        } else {
+            return (<>🐽</>)
+        }
+    }
+
 
     function Pig(pig) {
         return (
             <div className="pig">
                 <section className="mini-section">
-                    {winnerFound ? <button onClick={handleRollButton} className="rollButton" disabled >Roll!</button> :
+                    {winnerFound ? <button className="rollButton" disabled >Roll!</button> :
                         <button onClick={handleRollButton} className="rollButton" >Roll!</button>}
                     <p className="last-roll">
                         {pig.previousRoll}: {lastRoll === null ? "-" : lastRoll}
@@ -80,32 +116,36 @@ export function Game() {
                     <p className="turn-total">
                         {pig.numberOfTurns}: {turnTotal}
                     </p>
-                    <button onClick={changePlayer} className="stickButton">Stick!</button>
+                    {winnerFound ? <button className="stickButton" disabled>Stick!</button> :
+                        <button onClick={changePlayer} className="stickButton">Stick!</button>}
                 </section>
             </div>
         );
     }
 
     return (
-        <div className="game-box">
-            <h1>🐷 Game of Pig 🐷 </h1>
-            <h2>(First to {gameLength})</h2>
-            <p className="player">Player 1 : {playerOneScore} {playerOnePlaying ? <>(Playing)</> : ""}</p>
-            <p className="player">Player 2 : {playerTwoScore} {playerTwoPlaying ? <>(Playing)</> : ""}</p>
+        <>
+            <h3 style={{ textAlign: "center" }}>Welcome to the Ultimate Pig game</h3>
+            <div className="game-box">
+                <h1>🐷 Game of Pig 🐷 </h1>
+                <h2>(First to {gameLength})</h2>
+                <p className="player">{playerOnePlaying ? <Indicator /> : ""}P1 score : {playerOneScore}</p>
+                <p className="player">{playerTwoPlaying ? <Indicator /> : ""}P2 score : {playerTwoScore}</p>
 
-            <Pig
-                previousRoll="Last Roll"
-                numberOfTurns="Turn Total"
-                roll={[0]}
-                turns={[10]}
-            ></Pig>
+                <Pig
+                    previousRoll="Last Roll"
+                    numberOfTurns="Turn Total"
+                    roll={[0]}
+                    turns={[10]}
+                ></Pig>
 
-            <button className="newShortGameButton" onClick={shortGame}>
-                New Short Game
-            </button>
-            <button className="newGameButton" onClick={longGame}>
-                New Game
-            </button>
-        </div>
+                <button className="newShortGameButton" onClick={shortGame}>
+                    New Short Game
+                </button>
+                <button className="newGameButton" onClick={longGame}>
+                    New Game
+                </button>
+            </div>
+        </>
     );
 }
