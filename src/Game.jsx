@@ -34,7 +34,19 @@ export function Game() {
     function handleRollButton() {
         const randomNumber = Math.floor(Math.random() * 6 + 1);
         setLastRoll(randomNumber);
-        setTurnTotal((turnTotal) => turnTotal + randomNumber);
+        if (playerOnePlaying === true && lastRoll === 1) {
+            setTurnTotal(0);
+            setPlayerOnePlaying(!playerOnePlaying);
+            setPlayerTwoPlaying(!playerTwoPlaying);
+            setCurrentPlayer("P2");
+        } else if (playerTwoPlaying === true && lastRoll === 1) {
+            setTurnTotal(0);
+            setPlayerOnePlaying(!playerOnePlaying);
+            setPlayerTwoPlaying(!playerTwoPlaying);
+            setCurrentPlayer("P1");
+        } else {
+            setTurnTotal((turnTotal) => turnTotal + randomNumber);
+        }
     }
 
     if (playerOneScore >= gameLength) {
