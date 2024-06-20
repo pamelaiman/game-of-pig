@@ -11,9 +11,11 @@ export function Game() {
     const [currentPlayer, setCurrentPlayer] = useState("P1");
     const [playerOnePlaying, setPlayerOnePlaying] = useState(true);
     const [playerTwoPlaying, setPlayerTwoPlaying] = useState(false);
+    const [winnerFound, setWinnerFound] = useState(false);
 
 
     function changePlayer() {
+
 
         if (currentPlayer === "P1") {
             setPlayerOnePlaying(!playerOnePlaying);
@@ -29,6 +31,11 @@ export function Game() {
             setCurrentPlayer("P1");
 
         }
+        if (playerOneScore >= gameLength) {
+            setWinnerFound(true)
+        } else if (playerTwoScore >= gameLength) {
+            setWinnerFound(true)
+        }
     }
     function handleRollButton() {
         const randomNumber = Math.floor(Math.random() * 6);
@@ -36,15 +43,31 @@ export function Game() {
         setTurnTotal((turnTotal) => turnTotal + randomNumber);
     }
 
+    if (playerOneScore >= gameLength) {
+        console.log("1 wins")
+    } else if (playerTwoScore >= gameLength) {
+        console.log("2 wins")
+    }
+
 
     function shortGame() {
         setGameLength(30);
-        setCurrentPlayer("P1")
+        setCurrentPlayer("P1");
+        setTurnTotal(0);
+        setLastRoll(null);
+        setPlayerOneScore(0);
+        setPlayerTwoScore(0);
+        setWinnerFound(false);
     }
 
     function longGame() {
         setGameLength(100);
         setCurrentPlayer("P1")
+        setTurnTotal(0);
+        setLastRoll(null);
+        setPlayerOneScore(0);
+        setPlayerTwoScore(0);
+        setWinnerFound(false);
     }
 
 
@@ -52,7 +75,8 @@ export function Game() {
         return (
             <div className="pig">
                 <section className="mini-section">
-                    <button onClick={handleRollButton} className="rollButton">Roll!</button>
+                    {winnerFound ? <button onClick={handleRollButton} className="rollButton" disabled >Roll!</button> :
+                        <button onClick={handleRollButton} className="rollButton" >Roll!</button>}
                     <p className="last-roll">
                         {pig.previousRoll}: {lastRoll === null ? "-" : lastRoll}
                     </p>
