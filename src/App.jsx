@@ -3,7 +3,7 @@ import { DemonstratingProps } from "./components/demo/DemonstratingProps";
 function App() {
     return (
         <div>
-            <h1>Game of Pig</h1>
+            <h1>Pamela's Game of Pig</h1>
             <DemonstratingProps />
         </div>
     );
