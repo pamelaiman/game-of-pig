@@ -12,7 +12,7 @@ module.exports = {
     settings: { react: { version: "18.2" } },
     plugins: ["react-refresh"],
     rules: {
-        // "react/prop-types": "off",//disable if not using prop-types
+        "react/prop-types": "off", //disable if not using prop-types
         "no-debugger": "off",
         // "no-unused-vars": "off",
         "react/jsx-no-target-blank": "off",

@@ -1,10 +1,10 @@
-import { DemonstratingProps } from "./components/demo/DemonstratingProps";
+import "./App.css";
+import { Game } from "./Game";
 
 function App() {
     return (
         <div>
-            <h1>Pamela's Game of Pig</h1>
-            <DemonstratingProps />
+            <Game />
         </div>
     );
 }

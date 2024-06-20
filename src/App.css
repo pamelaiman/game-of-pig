@@ -1,0 +1,62 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-box {
+    background-color: lightgray;
+    border-radius: 10px;
+
+    padding: 20px;
+    text-align: center;
+    width: 40rem;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.2em;
+    font-weight: normal;
+}
+
+.scoreboard {
+    font-size: 1.2em;
+}
+
+button {
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    font-size: 1em;
+}
+
+.rollButton {
+    background-color:lightgreen;
+}
+
+.stickButton {
+    background-color: red;
+}
+
+.newGameButton, .newShortGameButton {
+    background-color: white;
+}
+
+.last-roll, .turn-total {
+    font-size: 1em;
+}
+
+.mini-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.mini-section .last-roll,
+.mini-section .turn-total {
+    margin: 0 10px;
+}
