@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-
-
 export function Game() {
     const [gameLength, setGameLength] = useState(30);
     const [lastRoll, setLastRoll] = useState(null);
@@ -13,9 +11,13 @@ export function Game() {
     const [playerTwoPlaying, setPlayerTwoPlaying] = useState(false);
     const [winnerFound, setWinnerFound] = useState(false);
 
-
     function changePlayer() {
 
+        if (playerOneScore >= gameLength) {
+            setWinnerFound(true)
+        } else if (playerTwoScore >= gameLength) {
+            setWinnerFound(true)
+        }
 
         if (currentPlayer === "P1") {
             setPlayerOnePlaying(!playerOnePlaying);
@@ -29,14 +31,9 @@ export function Game() {
             setPlayerTwoScore((playerTwoScore) => playerTwoScore + turnTotal);
             setTurnTotal(0);
             setCurrentPlayer("P1");
-
-        }
-        if (playerOneScore >= gameLength) {
-            setWinnerFound(true)
-        } else if (playerTwoScore >= gameLength) {
-            setWinnerFound(true)
         }
     }
+
     function handleRollButton() {
         const randomNumber = Math.floor(Math.random() * 6);
         setLastRoll(randomNumber);
