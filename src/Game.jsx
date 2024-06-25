@@ -45,7 +45,7 @@ export function Game() {
         const randomNumber = Math.floor(Math.random() * 6 + 1);
         setLastRoll(randomNumber);
         if (randomNumber === 1) {
-            setTurnTotal((turnTotal) => turnTotal - turnTotal);
+            setTurnTotal(0);
             setCurrentPlayer("P2");
             setPlayerOnePlaying(!playerOnePlaying);
             setPlayerTwoPlaying(!playerTwoPlaying);
@@ -76,6 +76,14 @@ export function Game() {
         setPlayerOnePlaying(true);
         setPlayerTwoPlaying(false);
         setWinnerFound(false);
+    }
+
+    function Indicator() {
+        if (winnerFound === true) {
+            return <>🏆</>;
+        } else {
+            return <>🐽</>;
+        }
     }
 
     function Pig(pig) {
@@ -129,20 +137,15 @@ export function Game() {
             <h1>🐷 Game of Pig 🐷 </h1>
             <h2>(First to {gameLength})</h2>
             <p className="player">
-                Player 1 : {playerOneScore}{" "}
-                {playerOnePlaying ? <>(Playing)</> : ""}
+                {playerOnePlaying ? <Indicator /> : ""}P1 score :{" "}
+                {playerOneScore}
             </p>
             <p className="player">
-                Player 2 : {playerTwoScore}{" "}
-                {playerTwoPlaying ? <>(Playing)</> : ""}
+                {playerTwoPlaying ? <Indicator /> : ""}P2 score :{" "}
+                {playerTwoScore}
             </p>
 
-            <Pig
-                previousRoll="Last Roll"
-                numberOfTurns="Turn Total"
-                roll={[0]}
-                turns={[10]}
-            ></Pig>
+            <Pig previousRoll="Last Roll" numberOfTurns="Turn Total"></Pig>
 
             <button className="newShortGameButton" onClick={shortGame}>
                 New Short Game
