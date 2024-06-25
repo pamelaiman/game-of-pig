@@ -79,11 +79,7 @@ export function Game() {
     }
 
     function Indicator() {
-        if (winnerFound === true) {
-            return <>🏆</>;
-        } else {
-            return <>🐽</>;
-        }
+        return <>🐽</>;
     }
 
     function Pig(pig) {
@@ -94,7 +90,7 @@ export function Game() {
                         <button
                             onClick={handleRollButton}
                             className="rollButton"
-                            disabled
+                            disabled={winnerFound}
                         >
                             Roll!
                         </button>
@@ -118,7 +114,7 @@ export function Game() {
                         <button
                             onClick={changePlayer}
                             className="stickButton"
-                            disabled
+                            disabled={winnerFound}
                         >
                             Stick!
                         </button>
